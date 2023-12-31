@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import styles from "./Wheel.module.scss";
+import "./Wheel.scss";
 
 interface WheelItem {
   title: string;
@@ -62,9 +62,21 @@ const Wheel = () => {
       // Text styles
       ctx.fillStyle = 'white';
       ctx.font = 'bold 16px Arial';
+      ctx.shadowColor = "#1d1d1d";
+      ctx.shadowBlur = 10;
       ctx.fillText(displayText, wheelRadius / 3, 6); // Draw the title
       ctx.restore();
     }
+  };
+
+  const spinWheel = () => {
+    if (!wheelCanvas.current) return;
+
+    wheelCanvas.current.classList.add('wheel_spinning');
+    setTimeout(() => {
+      if (!wheelCanvas.current) return;
+      wheelCanvas.current.classList.remove('wheel_spinning');
+    }, 10000);
   };
 
   useEffect(() => {
@@ -73,7 +85,8 @@ const Wheel = () => {
   }, [wheelItems]);
 
   return (
-    <section className={styles.wheelContainer}>
+    <section className='wheel-container'>
+      <button className='spin-btn' onClick={spinWheel}>Spin</button>
       <canvas ref={wheelCanvas} width="500px" height="500px"></canvas>
     </section>
   );
