@@ -20,22 +20,4 @@
         box-shadow: 0px 0px 22px #000;
         z-index: 5;
     }
-
-    .wheel_spinning {
-        animation-name: spinAnimation;
-        transform-origin: 50% 50%;
-        animation-fill-mode: forwards;
-        animation-timing-function: cubic-bezier(0.0002,0.0001,0.001,0.9999);
-        animation-duration: 10s;
-    }
-}
-
-@keyframes spinAnimation {
-    0% {
-        transform: rotate(-2500deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
-    }
 }

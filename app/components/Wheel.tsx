@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import "./Wheel.scss";
+import { getRandomNumber } from "@/helpers/helpers";
 
 interface WheelItem {
   title: string;
@@ -20,6 +21,7 @@ const initialItems: WheelItem[] = [
 const Wheel = () => {
   const [wheelItems, setWheelItems] = useState<WheelItem[]>(initialItems);
   const wheelCanvas = useRef<HTMLCanvasElement>(null);
+  const [spinResultAngle, setSpinResultAngle] = useState<number>(0);
 
   const drawWheel = () => {
     const { current: canvas } = wheelCanvas;
@@ -72,15 +74,22 @@ const Wheel = () => {
   const spinWheel = () => {
     if (!wheelCanvas.current) return;
 
-    wheelCanvas.current.classList.add('wheel_spinning');
-    setTimeout(() => {
-      if (!wheelCanvas.current) return;
-      wheelCanvas.current.classList.remove('wheel_spinning');
-    }, 10000);
+    wheelCanvas.current.animate(
+      {
+        transform: ['rotate(-2500deg)', `rotate(${spinResultAngle}deg)`],
+      }, 
+      {
+        duration: 7500,
+        easing: 'cubic-bezier(0.0002, 0.0001, 0.001, 0.9999)',
+        fill: 'forwards'
+      }
+    );
   };
 
   useEffect(() => {
     drawWheel();
+    setSpinResultAngle(() => getRandomNumber(0,365));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wheelItems]);
 
