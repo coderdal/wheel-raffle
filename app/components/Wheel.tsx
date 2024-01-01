@@ -21,7 +21,10 @@ const initialItems: WheelItem[] = [
 const Wheel = () => {
   const [wheelItems, setWheelItems] = useState<WheelItem[]>(initialItems);
   const wheelCanvas = useRef<HTMLCanvasElement>(null);
-  const [spinResultAngle, setSpinResultAngle] = useState<number>(0);
+  const spinResultAngle = useRef<number>(0);
+
+  // Constants
+  const ANIMATION_DURATION = 10000 // ms
 
   const drawWheel = () => {
     const { current: canvas } = wheelCanvas;
@@ -73,23 +76,31 @@ const Wheel = () => {
 
   const spinWheel = () => {
     if (!wheelCanvas.current) return;
+    spinResultAngle.current = getRandomNumber(0,365);
 
     wheelCanvas.current.animate(
       {
-        transform: ['rotate(-2500deg)', `rotate(${spinResultAngle}deg)`],
+        transform: ['rotate(-2500deg)', `rotate(${spinResultAngle.current}deg)`],
       }, 
       {
-        duration: 7500,
+        duration: ANIMATION_DURATION,
         easing: 'cubic-bezier(0.0002, 0.0001, 0.001, 0.9999)',
         fill: 'forwards'
       }
     );
+
+    // On animation ends
+    setTimeout(() => {
+      displayResult();
+    }, ANIMATION_DURATION);
   };
+
+  const displayResult = () => {
+    console.log('result is');
+  }
 
   useEffect(() => {
     drawWheel();
-    setSpinResultAngle(() => getRandomNumber(0,365));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wheelItems]);
 
